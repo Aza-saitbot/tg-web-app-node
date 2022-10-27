@@ -55,7 +55,7 @@ bot.on('message', async (msg) => {
 
 app.post('/web-data',async (req,res)=>{
 
-    const { totalPrice, queryId}=req.body
+    const {products, totalPrice, queryId}=req.body
 
    try{
        await bot.answerWebAppQuery(queryId,{
@@ -63,19 +63,13 @@ app.post('/web-data',async (req,res)=>{
            id:queryId,
            title:'Успешная прогулка',
            input_message_content:{
-               message_text:'Поздравляю с покупкой, вы приобрели товар на сумму '+ totalPrice
+               message_text:`Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, купленные товары: 
+               ${products.map(i=>i.title).join(', ')}`
            }
        })
        return res.status(200).json({})
    }catch (e) {
-       await bot.answerWebAppQuery(queryId,{
-           type:'article',
-           id:queryId,
-           title:'Не удалось приобрести товар',
-           input_message_content:{
-               message_text:'Не удалось приобрести товар'
-           }
-       })
+
        return res.status(500).json({})
    }
 
