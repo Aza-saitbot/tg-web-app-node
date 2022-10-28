@@ -4,7 +4,7 @@ const cors = require('cors')
 
 const token = '5522402285:AAFXzGLSFo45ixG5MTXZE2JWgqrr4MJrBgE'
 const PORT = 8000
-const webAppUrl = 'https://web-tg-react-app.netlify.app'
+ const webAppUrl = 'https://web-tg-react-app.netlify.app'
 
 const bot = new TelegramBot(token, {polling: true})
 const app = express()
