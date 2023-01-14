@@ -2,9 +2,9 @@ const TelegramBot = require('node-telegram-bot-api')
 const express = require('express')
 const cors = require('cors')
 
-const token = '5522402285:AAFXzGLSFo45ixG5MTXZE2JWgqrr4MJrBgE'
+const token = '5697588352:AAFDUAi6nUhQc63GSxT_maDtdNdl6CcRI7w'
 const PORT = 8000
- const webAppUrl = 'https://web-tg-react-app.netlify.app'
+ const webAppUrl = 'https://tg-web-app-react-sigma.vercel.app'
 
 const bot = new TelegramBot(token, {polling: true})
 const app = express()
@@ -12,36 +12,56 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+const urlGeoSalon='https://www.google.com/maps/place/Arkin+kuafor+guzellik+salonu/@36.6926803,34.4460278,18.12z/data=!4m5!3m4!1s0x14d8774e7e8b49ed:0xbe92973d74c2d4af!8m2!3d36.6920018!4d34.4449682?hl=ru'
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id
     const text = msg.text
 
-    if (text === '/start') {
-        await bot.sendMessage(chatId, 'Ниже появиться кнопка заполните форму', {
+    if(text === '/start') {
+
+        await bot.sendMessage(chatId, 'Посмотреть геолокацию салона красоты', {
             reply_markup: {
                 inline_keyboard: [
-                    [{text: 'Заполнить форму', web_app: {url: webAppUrl + '/form'}}]
+                    [{text: 'Геолокация', web_app: {url: urlGeoSalon}}]
                 ]
             }
         })
-    }
+        await bot.sendMessage(chatId, 'Cалон красоты "Arkin"', {
+            reply_markup: {
+                keyboard: [
+                    [{text: 'Записаться', web_app: {url: webAppUrl + '/form'}}]
+                ]
+            }
+        })
+        await bot.sendMessage(chatId, 'Посмотреть работы, можно здесь', {
+            reply_markup: {
+                inline_keyboard: [
+                    [{text: 'Работы', web_app: {url: webAppUrl}}]
+                ]
+            }
+        })
 
-    await bot.sendMessage(chatId, 'Заходи в наш интернет магазин по кнопке ниже', {
-        reply_markup: {
-            inline_keyboard: [
-                [{text: 'Оформить заказ', web_app: {url: webAppUrl}}]
-            ]
-        }
-    })
+    }
 
     if (msg?.web_app_data?.data) {
         try {
+            console.log('msg?.web_app_data?.data',msg?.web_app_data?.data)
             const data = JSON.parse(msg?.web_app_data?.data)
+            
+            console.log('ПРИНИМАЕМ ДАТУ',data)
+            //
+            // {
+            //     services:selected,
+            //         comment,
+            //         date:valueDate,
+            //     time
+            // }
 
-            await bot.sendMessage(chatId, 'Спасибо за обратную связь')
-            await bot.sendMessage(chatId, 'Ваша страна: ' + data?.country)
-            await bot.sendMessage(chatId, 'Ваша улица: ' + data?.street)
+            await bot.sendMessage(chatId, 'Запись успешно создано')
+            await bot.sendMessage(chatId, 'Ваша услуги: ' + data?.services.map(s => s.join(', ')))
+            await bot.sendMessage(chatId, 'Дата и время: ' + data?.date + ` - ${data.time}`)
+            await bot.sendMessage(chatId, 'Комментария: ' + data?.comment)
 
             setTimeout(async () => {
                 await bot.sendMessage(chatId, 'Все информацию вы получите в этом чате')
