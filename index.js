@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api')
 const express = require('express')
 const cors = require('cors')
+const dayjs=require('dayjs')
 
 const token = '5697588352:AAFDUAi6nUhQc63GSxT_maDtdNdl6CcRI7w'
 const PORT = 8000
@@ -46,22 +47,15 @@ bot.on('message', async (msg) => {
 
     if (msg?.web_app_data?.data) {
         try {
-            console.log('msg?.web_app_data?.data',msg?.web_app_data?.data)
             const data = JSON.parse(msg?.web_app_data?.data)
-            
             console.log('ПРИНИМАЕМ ДАТУ',data)
-            //
-            // {
-            //     services:selected,
-            //         comment,
-            //         date:valueDate,
-            //     time
-            // }
 
             await bot.sendMessage(chatId, 'Запись успешно создано')
-            await bot.sendMessage(chatId, 'Ваша услуги: ' + data?.services.map(s => s.join(', ')))
-            await bot.sendMessage(chatId, 'Дата и время: ' + data?.date + ` - ${data.time}`)
-            await bot.sendMessage(chatId, 'Комментария: ' + data?.comment)
+            await bot.sendMessage(chatId, 'Ваша услуги: ' + data?.services.map(s => s))
+            await bot.sendMessage(chatId, 'Дата и время: ' + data?.date + ` - ${new Date(data?.time).getHours()}`+`:${new Date(data?.time).getMinutes()}`)
+            if (data?.comment?.length>0){
+                await bot.sendMessage(chatId, 'Комментария: ' + data?.comment)
+            }
 
             setTimeout(async () => {
                 await bot.sendMessage(chatId, 'Все информацию вы получите в этом чате')
@@ -74,7 +68,7 @@ bot.on('message', async (msg) => {
 })
 
 app.post('/web-data', async (req, res) => {
-
+console.log('1111111111req.body',req.body)
     const {products=[], totalPrice, queryId} = req.body
 
     try {
