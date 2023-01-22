@@ -55,7 +55,13 @@ bot.on('message', async (msg) => {
             if (data?.comment?.length > 0) {
                 await bot.sendMessage(chatId, 'Комментария: ' + data?.comment)
             }
-
+            await bot.sendMessage(chatId, 'Посмотреть геолокацию салона красоты - Arkin', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: 'Геолокация', web_app: {url: urlGeoSalon}}]
+                    ]
+                }
+            })
             setTimeout(async () => {
                 await bot.sendMessage(chatId, 'Всю информацию Вы получите в этом чате')
             }, 3000)
