@@ -21,13 +21,7 @@ bot.on('message', async (msg) => {
     const text = msg.text
 
     if (text === '/start') {
-        await bot.sendMessage(chatId, 'Записаться на прием в салон красоты', {
-            reply_markup: {
-                inline_keyboard: [
-                    [{text: 'Записаться', web_app: {url: webAppUrl + '/form'}}]
-                ]
-            }
-        })
+
         await bot.sendMessage(chatId, 'Посмотреть геолокацию салона красоты - Arkin', {
             reply_markup: {
                 inline_keyboard: [
@@ -38,7 +32,7 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'Cалон красоты "Arkin"', {
             reply_markup: {
                 keyboard: [
-                    [{text: 'Записаться', web_app: {url: webAppUrl + '/form'}}]
+                    [{text: 'Записаться в салон!', web_app: {url: webAppUrl + '/form'}}]
                 ]
             }
         })
