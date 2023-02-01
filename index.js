@@ -21,7 +21,13 @@ bot.on('message', async (msg) => {
     const text = msg.text
 
     if (text === '/start') {
-
+        await bot.sendMessage(chatId, 'Записаться на прием в салон красоты', {
+            reply_markup: {
+                inline_keyboard: [
+                    [{text: 'Записаться', web_app: {url: webAppUrl + '/form'}}]
+                ]
+            }
+        })
         await bot.sendMessage(chatId, 'Посмотреть геолокацию салона красоты - Arkin', {
             reply_markup: {
                 inline_keyboard: [
@@ -47,7 +53,7 @@ bot.on('message', async (msg) => {
     }
 
     if (msg?.web_app_data?.data) {
-        console.log('ccccccccccccc',msg?.web_app_data?.data)
+
         try {
             const data = JSON.parse(msg?.web_app_data?.data)
             await bot.sendMessage(chatId, 'Запись успешно создано')
