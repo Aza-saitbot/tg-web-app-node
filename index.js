@@ -4,7 +4,7 @@ const cors = require('cors')
 const dayjs = require('dayjs')
 require('dayjs/locale/ru')
 
-const token = '5697588352:AAFDUAi6nUhQc63GSxT_maDtdNdl6CcRI7w'
+const token = '6052664667:AAHxDGMTptzCUv7JRq9h_8-dVMFR5UGa6ro'
 const PORT = 8000
 const webAppUrl = 'https://tg-web-app-react-sigma.vercel.app'
 
